@@ -1,49 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
+<title>Admin Login – LESSE Motors</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LESSE Motors - Admin Login</title>
+
 <link rel="stylesheet" href="../css/style.css">
-<link rel="icon" type="image/png" href="../assets/logo-le.svg">
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+<script src="../js/firebase-config.js"></script>
+<script src="admin.js" defer></script>
+
+<style>
+body {
+    background: #111;
+    color: #fff;
+    font-family: Arial;
+    padding: 40px;
+    text-align: center;
+}
+
+.login-box {
+    max-width: 350px;
+    margin: auto;
+    background: #222;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #ffcc00;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+</style>
 </head>
+
 <body>
 
-<div class="page-wrapper" style="padding-top:90px; max-width:400px; margin:auto; text-align:center;">
+<h2>LESSE Motors Admin</h2>
 
-  <h1 style="color:#ffcc00;margin-bottom:20px;">Admin Login</h1>
-
-  <form id="loginForm" style="display:flex;flex-direction:column;gap:15px;background:#222;padding:20px;border-radius:10px;border:1px solid #333;">
-    <input type="text" id="username" placeholder="Username" required style="padding:10px;border-radius:5px;border:none;">
-    <input type="password" id="password" placeholder="Password" required style="padding:10px;border-radius:5px;border:none;">
-    <button type="submit" style="padding:15px;background:#ffcc00;color:#111;font-weight:bold;border-radius:8px;border:none;cursor:pointer;">Login</button>
-  </form>
-
-  <div id="loginMessage" style="margin-top:20px;color:#ffcc00;font-weight:bold;"></div>
-
+<div class="login-box">
+    <input type="text" id="adminEmail" placeholder="Admin Email">
+    <input type="password" id="adminPass" placeholder="Password">
+    <button onclick="adminLogin()">Login</button>
 </div>
-
-<script>
-const loginForm = document.getElementById('loginForm');
-const loginMessage = document.getElementById('loginMessage');
-
-// Admin credentials
-const ADMIN_USERNAME = 'LesseMotors';
-const ADMIN_PASSWORD = 'Ra160824$';
-
-loginForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    if(username === ADMIN_USERNAME && password === ADMIN_PASSWORD){
-        loginMessage.textContent = 'Login successful! Redirecting...';
-        window.location.href = 'dashboard.html';
-    } else {
-        loginMessage.textContent = 'Invalid username or password.';
-    }
-});
-</script>
 
 </body>
 </html>
