@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LESSE Motors - Car Type</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/main.js" defer></script>
+<style>
+body, html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
+nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.8);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
+nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
+nav a:hover{color:#ffcc00;}
+.container{padding-top:80px;max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.model-card{background:#222;border-radius:10px;padding:10px;text-align:center;cursor:pointer;}
+.model-card img{width:100%;border-radius:10px;}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="models.html">Models</a>
+<a href="gallery.html">Gallery</a>
+<a href="preorder.html">Pre-Order</a>
+<a href="contact.html">Contact</a>
+</nav>
+
+<h1 id="pageTitle" style="text-align:center;margin-top:100px;">Car Models</h1>
+<div class="container" id="modelsContainer"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", ()=>{
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("type") || "sedan";
+    document.getElementById("pageTitle").textContent = type.toUpperCase() + " Models";
+
+    const container = document.getElementById("modelsContainer");
+
+    firebase.firestore().collection("cars")
+        .where("type","==",type)
+        .orderBy("timestamp","desc")
+        .get()
+        .then(snapshot=>{
+            snapshot.forEach(doc=>{
+                const data = doc.data();
+                const card = document.createElement("div");
+                card.className = "model-card";
+                const img = document.createElement("img");
+                img.src = data.image;
+                card.appendChild(img);
+                container.appendChild(card);
+            });
+        });
+});
+</script>
+
+</body>
+</html>
