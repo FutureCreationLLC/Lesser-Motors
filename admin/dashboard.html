@@ -1,84 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
+<title>Admin Dashboard – LESSE Motors</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LESSE Motors - Admin Dashboard</title>
+
 <link rel="stylesheet" href="../css/style.css">
-<link rel="icon" type="image/png" href="../assets/logo-le.svg">
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+<script src="../js/firebase-config.js"></script>
+<script src="admin.js" defer></script>
+
+<style>
+body { background:#111; color:#fff; font-family:Arial; padding:20px; }
+.section { background:#222; padding:20px; border-radius:10px; margin-bottom:20px; }
+input, select { padding:10px; border:none; border-radius:8px; width:100%; margin-top:10px; }
+button { margin-top:10px; padding:10px; width:100%; background:#ffcc00; border:none; border-radius:8px; font-weight:bold; }
+</style>
+
 </head>
 <body>
 
-<nav>
-  <a href="../index.html">Home</a>
-  <a href="../models.html">Models</a>
-  <a href="../gallery.html">Gallery</a>
-</nav>
+<h2>LESSE Motors Admin Dashboard</h2>
 
-<div class="page-wrapper" style="padding-top:90px; max-width:600px; margin:auto; text-align:center;">
+<button onclick="logout()">Logout</button>
 
-  <h1 style="color:#ffcc00;margin-bottom:20px;">Admin Dashboard</h1>
-
-  <form id="uploadForm" style="display:flex;flex-direction:column;gap:15px;background:#222;padding:20px;border-radius:10px;border:1px solid #333;">
-    <select id="carType" required style="padding:10px;border-radius:5px;border:none;">
-      <option value="">Select Car Type</option>
-      <option value="pragya">Pragya</option>
-      <option value="sedan">Sedan</option>
-      <option value="bus">Bus</option>
-      <option value="suv">SUV</option>
-      <option value="pickup">Pickup</option>
-      <option value="van">Van</option>
-      <option value="cargo">Cargo</option>
-      <option value="mini-truck">Mini Truck</option>
-      <option value="luxury">Luxury</option>
-      <option value="coupe">Coupe</option>
-    </select>
-
-    <input type="file" id="carImage" accept="image/*" required>
-    <button type="submit" style="padding:15px;background:#ffcc00;color:#111;font-weight:bold;border-radius:8px;border:none;cursor:pointer;">Upload Image</button>
-  </form>
-
-  <div id="uploadMessage" style="margin-top:20px;color:#ffcc00;font-weight:bold;"></div>
-
+<!-- BACKGROUND UPLOAD -->
+<div class="section">
+<h3>Upload Background Image</h3>
+<input type="file" id="bgUpload">
+<button onclick="uploadBackground()">Upload</button>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-<script src="../js/firebase-config.js"></script>
-<script>
-const uploadForm = document.getElementById('uploadForm');
-const carTypeSelect = document.getElementById('carType');
-const carImage = document.getElementById('carImage');
-const uploadMessage = document.getElementById('uploadMessage');
+<!-- CAR TYPE UPLOAD -->
+<div class="section">
+<h3>Upload Car Model</h3>
+<select id="carType">
+<option value="sedan">Sedan</option>
+<option value="bus">Bus</option>
+<option value="pragya">Pragya</option>
+<option value="truck">Truck</option>
+<option value="van">Van</option>
+<option value="pickup">Pickup</option>
+<option value="electric">Electric</option>
+</select>
 
-uploadForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    const type = carTypeSelect.value;
-    const file = carImage.files[0];
+<input type="file" id="carImage">
+<button onclick="uploadCarModel()">Upload Model</button>
+</div>
 
-    if(!type || !file){
-        uploadMessage.textContent = 'Please select car type and image.';
-        return;
-    }
+<!-- PREORDER LIST -->
+<div class="section">
+<h3>Pre-Orders</h3>
+<div id="preorderList"></div>
+</div>
 
-    const fileRef = storageRef.child(`${type}/${Date.now()}_${file.name}`);
-    const uploadTask = fileRef.put(file);
-
-    uploadMessage.textContent = 'Uploading...';
-
-    uploadTask.on('state_changed',
-        snapshot => {},
-        error => { uploadMessage.textContent = 'Upload failed: ' + error; },
-        () => {
-            uploadTask.snapshot.ref.getDownloadURL().then(url=>{
-                uploadMessage.textContent = 'Upload successful!';
-                carTypeSelect.value = '';
-                carImage.value = '';
-            });
-        }
-    );
-});
-</script>
+<!-- CONTACT MESSAGES -->
+<div class="section">
+<h3>Contact Messages</h3>
+<div id="contactList"></div>
+</div>
 
 </body>
 </html>
