@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LESSE Motors - Pre-Order</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/png" href="assets/logo-le.svg">
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="models.html">Models</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="preorder.html">Pre-Order</a>
+  <a href="contact.html">Contact</a>
+  <a href="admin/login.html">Admin</a>
+</nav>
+
+<div class="page-wrapper" style="padding-top:90px; max-width:600px; margin:auto;">
+
+  <h1 style="text-align:center;color:#ffcc00;margin-bottom:20px;">Pre-Order Your Car</h1>
+  
+  <form id="preorderForm" style="display:flex;flex-direction:column;gap:15px;background:#222;padding:20px;border-radius:10px;border:1px solid #333;">
+    <input type="text" name="name" placeholder="Full Name" required style="padding:10px;border-radius:5px;border:none;">
+    <input type="tel" name="phone" placeholder="Phone Number (call/WhatsApp)" required style="padding:10px;border-radius:5px;border:none;">
+    <input type="email" name="email" placeholder="Email" required style="padding:10px;border-radius:5px;border:none;">
+    
+    <select name="model" required style="padding:10px;border-radius:5px;border:none;">
+      <option value="">Select Car Model</option>
+      <option value="pragya">Pragya</option>
+      <option value="sedan">Sedan</option>
+      <option value="bus">Bus</option>
+      <option value="suv">SUV</option>
+      <option value="pickup">Pickup</option>
+      <option value="van">Van</option>
+      <option value="cargo">Cargo</option>
+      <option value="mini-truck">Mini Truck</option>
+      <option value="luxury">Luxury</option>
+      <option value="coupe">Coupe</option>
+    </select>
+
+    <input type="number" name="quantity" placeholder="Quantity" min="1" required style="padding:10px;border-radius:5px;border:none;">
+
+    <textarea name="message" placeholder="Additional Notes (optional)" style="padding:10px;border-radius:5px;border:none;"></textarea>
+
+    <button type="submit" style="padding:15px;background:#ffcc00;color:#111;font-weight:bold;border-radius:8px;border:none;cursor:pointer;">Submit Pre-Order</button>
+  </form>
+
+  <div style="margin-top:20px;text-align:center;">
+    <p>Or contact us directly:</p>
+    <a href="tel:+233123456789" style="color:#ffcc00;margin-right:10px;">Call</a> |
+    <a href="https://wa.me/233123456789" target="_blank" style="color:#ffcc00;margin-left:10px;">WhatsApp</a> |
+    <a href="mailto:info@lessemotors.com" style="color:#ffcc00;margin-left:10px;">Email</a>
+  </div>
+
+  <div id="confirmation" style="margin-top:20px;text-align:center;color:#ffcc00;font-weight:bold;"></div>
+
+</div>
+
+<script>
+const preorderForm = document.getElementById('preorderForm');
+const confirmation = document.getElementById('confirmation');
+
+preorderForm.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const formData = new FormData(preorderForm);
+    const name = formData.get('name');
+    const phone = formData.get('phone');
+    const email = formData.get('email');
+    const model = formData.get('model');
+    const quantity = formData.get('quantity');
+    const message = formData.get('message');
+
+    // Currently we just show confirmation; backend/email integration can be added later
+    confirmation.textContent = `Thank you ${name}! Your pre-order for ${quantity} ${model.toUpperCase()} car(s) has been received. We will contact you via call/WhatsApp or email.`;
+
+    preorderForm.reset();
+});
+</script>
+
+</body>
+</html>
