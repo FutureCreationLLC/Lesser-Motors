@@ -5,79 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LESSE Motors - Pre-Order</title>
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="assets/logo-le.svg">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/main.js" defer></script>
+<style>
+body{background:#111;color:#fff;font-family:Arial;padding:20px;}
+h1{text-align:center;color:#ffcc00;}
+form{max-width:500px;margin:auto;background:#222;padding:20px;border-radius:10px;}
+input, select, textarea{width:100%;padding:10px;margin:10px 0;border:none;border-radius:8px;}
+button{padding:12px;width:100%;background:#ffcc00;border:none;font-weight:bold;color:#111;}
+.success{color:#0f0;font-weight:bold;text-align:center;}
+</style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="models.html">Models</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="preorder.html">Pre-Order</a>
-  <a href="contact.html">Contact</a>
-  <a href="admin/login.html">Admin</a>
-</nav>
+<h1>Pre-Order Your Car</h1>
 
-<div class="page-wrapper" style="padding-top:90px; max-width:600px; margin:auto;">
-
-  <h1 style="text-align:center;color:#ffcc00;margin-bottom:20px;">Pre-Order Your Car</h1>
-  
-  <form id="preorderForm" style="display:flex;flex-direction:column;gap:15px;background:#222;padding:20px;border-radius:10px;border:1px solid #333;">
-    <input type="text" name="name" placeholder="Full Name" required style="padding:10px;border-radius:5px;border:none;">
-    <input type="tel" name="phone" placeholder="Phone Number (call/WhatsApp)" required style="padding:10px;border-radius:5px;border:none;">
-    <input type="email" name="email" placeholder="Email" required style="padding:10px;border-radius:5px;border:none;">
-    
-    <select name="model" required style="padding:10px;border-radius:5px;border:none;">
-      <option value="">Select Car Model</option>
-      <option value="pragya">Pragya</option>
-      <option value="sedan">Sedan</option>
-      <option value="bus">Bus</option>
-      <option value="suv">SUV</option>
-      <option value="pickup">Pickup</option>
-      <option value="van">Van</option>
-      <option value="cargo">Cargo</option>
-      <option value="mini-truck">Mini Truck</option>
-      <option value="luxury">Luxury</option>
-      <option value="coupe">Coupe</option>
-    </select>
-
-    <input type="number" name="quantity" placeholder="Quantity" min="1" required style="padding:10px;border-radius:5px;border:none;">
-
-    <textarea name="message" placeholder="Additional Notes (optional)" style="padding:10px;border-radius:5px;border:none;"></textarea>
-
-    <button type="submit" style="padding:15px;background:#ffcc00;color:#111;font-weight:bold;border-radius:8px;border:none;cursor:pointer;">Submit Pre-Order</button>
-  </form>
-
-  <div style="margin-top:20px;text-align:center;">
-    <p>Or contact us directly:</p>
-    <a href="tel:+233123456789" style="color:#ffcc00;margin-right:10px;">Call</a> |
-    <a href="https://wa.me/233123456789" target="_blank" style="color:#ffcc00;margin-left:10px;">WhatsApp</a> |
-    <a href="mailto:info@lessemotors.com" style="color:#ffcc00;margin-left:10px;">Email</a>
-  </div>
-
-  <div id="confirmation" style="margin-top:20px;text-align:center;color:#ffcc00;font-weight:bold;"></div>
-
-</div>
+<form id="preorderForm">
+<input type="text" id="name" placeholder="Full Name" required>
+<input type="email" id="email" placeholder="Email" required>
+<input type="text" id="phone" placeholder="Phone Number" required>
+<select id="carType" required>
+<option value="">Select Car Type</option>
+<option value="sedan">Sedan</option>
+<option value="pragya">Pragya</option>
+<option value="bus">Bus</option>
+<option value="truck">Truck</option>
+<option value="van">Van</option>
+<option value="pickup">Pickup</option>
+<option value="electric">Electric</option>
+</select>
+<textarea id="message" placeholder="Additional Message"></textarea>
+<button type="submit">Submit Pre-Order</button>
+<div class="success" id="successMsg"></div>
+</form>
 
 <script>
-const preorderForm = document.getElementById('preorderForm');
-const confirmation = document.getElementById('confirmation');
-
-preorderForm.addEventListener('submit', function(e){
+document.getElementById("preorderForm").addEventListener("submit", e=>{
     e.preventDefault();
-
-    const formData = new FormData(preorderForm);
-    const name = formData.get('name');
-    const phone = formData.get('phone');
-    const email = formData.get('email');
-    const model = formData.get('model');
-    const quantity = formData.get('quantity');
-    const message = formData.get('message');
-
-    // Currently we just show confirmation; backend/email integration can be added later
-    confirmation.textContent = `Thank you ${name}! Your pre-order for ${quantity} ${model.toUpperCase()} car(s) has been received. We will contact you via call/WhatsApp or email.`;
-
-    preorderForm.reset();
+    const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        carType: document.getElementById("carType").value,
+        message: document.getElementById("message").value,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    firebase.firestore().collection("preorders").add(data)
+    .then(()=>{
+        document.getElementById("successMsg").textContent="Pre-order submitted successfully!";
+        document.getElementById("preorderForm").reset();
+    })
+    .catch(err=>{
+        alert("Error: "+err.message);
+    });
 });
 </script>
 
