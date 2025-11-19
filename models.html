@@ -5,81 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LESSE Motors - Models</title>
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="assets/logo-le.svg">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/main.js" defer></script>
+<style>
+body, html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
+nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.8);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
+nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
+nav a:hover{color:#ffcc00;}
+.container{padding-top:80px;max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.type-card{position:relative;height:250px;border-radius:10px;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;}
+.type-card img{width:100%;height:100%;object-fit:cover;filter:brightness(0.6);}
+.type-title{position:absolute;color:#ffcc00;font-size:24px;font-weight:bold;text-transform:uppercase;}
+</style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html">Home</a>
-  <a href="models.html">Models</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="preorder.html">Pre-Order</a>
-  <a href="contact.html">Contact</a>
-  <a href="admin/login.html">Admin</a>
+<a href="index.html">Home</a>
+<a href="models.html">Models</a>
+<a href="gallery.html">Gallery</a>
+<a href="preorder.html">Pre-Order</a>
+<a href="contact.html">Contact</a>
 </nav>
 
-<div class="page-wrapper" style="padding-top:90px; max-width:1200px; margin:auto;">
-  
-  <!-- Model Categories -->
-  <div id="modelsContainer"></div>
+<h1 style="text-align:center;margin-top:100px;">Our Car Models</h1>
 
-</div>
+<div class="container" id="typesContainer"></div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/main.js"></script>
 <script>
-const modelsContainer = document.getElementById('modelsContainer');
-const carTypes = ['pragya','sedan','bus','suv','pickup','van','cargo','mini-truck','luxury','coupe'];
+document.addEventListener("DOMContentLoaded", () => {
+    const carTypes = ['sedan','pragya','bus','truck','van','pickup','electric'];
+    const container = document.getElementById("typesContainer");
 
-carTypes.forEach(type=>{
-    const categoryTitle = document.createElement('h2');
-    categoryTitle.textContent = type.toUpperCase() + ' Cars';
-    categoryTitle.style.color='#ffcc00';
-    categoryTitle.style.margin='20px 0 10px';
-    modelsContainer.appendChild(categoryTitle);
-
-    const grid = document.createElement('div');
-    grid.className='image-grid';
-    grid.style.display='grid';
-    grid.style.gridTemplateColumns='repeat(auto-fit,minmax(250px,1fr))';
-    grid.style.gap='20px';
-    modelsContainer.appendChild(grid);
-
-    const typeRef = storageRef.child(type);
-    typeRef.listAll().then(res=>{
-        if(res.items.length === 0){
-            const placeholder = document.createElement('div');
-            placeholder.className='placeholder';
-            placeholder.textContent = 'No images uploaded yet.';
-            grid.appendChild(placeholder);
-        } else {
-            res.items.forEach(itemRef=>{
-                itemRef.getDownloadURL().then(url=>{
-                    const card = document.createElement('div');
-                    card.className='model-card';
-                    card.style.background='#222';
-                    card.style.borderRadius='10px';
-                    card.style.padding='10px';
-                    card.style.textAlign='center';
-                    card.style.border='1px solid #333';
-
-                    const imageEl = document.createElement('img');
-                    imageEl.src = url;
-                    imageEl.style.width='100%';
-                    imageEl.style.borderRadius='10px';
-
-                    const title = document.createElement('div');
-                    title.className='model-title';
-                    title.textContent = type.toUpperCase();
-
-                    card.appendChild(imageEl);
-                    card.appendChild(title);
-                    grid.appendChild(card);
+    carTypes.forEach(type => {
+        // Fetch first image of type from Firestore
+        firebase.firestore().collection("cars")
+            .where("type","==",type)
+            .orderBy("timestamp","asc")
+            .limit(1)
+            .get()
+            .then(snapshot=>{
+                let imgURL = 'assets/logo-le-sunshine.svg'; // default if no image
+                snapshot.forEach(doc=>{
+                    imgURL = doc.data().image;
                 });
+
+                const card = document.createElement("div");
+                card.className = "type-card";
+                card.innerHTML = `<img src="${imgURL}"><div class="type-title">${type.toUpperCase()}</div>`;
+                card.onclick = ()=>{ window.location.href = `models-type.html?type=${type}` };
+                container.appendChild(card);
             });
-        }
     });
 });
 </script>
