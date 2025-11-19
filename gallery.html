@@ -11,7 +11,7 @@
 <script src="js/firebase-config.js"></script>
 <script src="js/main.js" defer></script>
 <style>
-body, html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
+body,html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
 nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.8);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
 nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
 nav a:hover{color:#ffcc00;}
@@ -20,6 +20,9 @@ img{width:100%;border-radius:10px;cursor:pointer;}
 #modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:10000;}
 #modal img{max-width:90%;max-height:90%;border-radius:10px;}
 #modal span{position:absolute;top:20px;right:30px;font-size:30px;cursor:pointer;color:#ffcc00;}
+.pagination{text-align:center;margin:20px;}
+.pagination button{padding:10px 20px;margin:5px;background:#ffcc00;border:none;color:#111;font-weight:bold;border-radius:5px;cursor:pointer;}
+.pagination button:disabled{opacity:0.5;cursor:default;}
 </style>
 </head>
 <body>
@@ -35,6 +38,11 @@ img{width:100%;border-radius:10px;cursor:pointer;}
 <h1 style="text-align:center;margin-top:100px;">Gallery</h1>
 <div class="container" id="galleryContainer"></div>
 
+<div class="pagination">
+<button id="prevBtn" disabled>Prev</button>
+<button id="nextBtn" disabled>Next</button>
+</div>
+
 <!-- Modal -->
 <div id="modal" onclick="this.style.display='none'">
     <span>&times;</span>
@@ -42,23 +50,35 @@ img{width:100%;border-radius:10px;cursor:pointer;}
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", ()=>{
-    const container = document.getElementById("galleryContainer");
-    firebase.firestore().collection("gallery")
-        .orderBy("timestamp","desc")
-        .get()
-        .then(snapshot=>{
-            snapshot.forEach(doc=>{
-                const data = doc.data();
-                const img = document.createElement("img");
-                img.src = data.image;
-                img.onclick = ()=>{
-                    document.getElementById("modal").style.display="flex";
-                    document.getElementById("modalImg").src = data.image;
-                };
-                container.appendChild(img);
-            });
-        });
+let galleryData = [];
+let currentPage = 0;
+const perPage = 12;
+const container = document.getElementById("galleryContainer");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function renderPage(){
+    container.innerHTML="";
+    const start = currentPage * perPage;
+    const end = start + perPage;
+    galleryData.slice(start,end).forEach(imgURL=>{
+        const img = document.createElement("img");
+        img.src = imgURL;
+        img.onclick = ()=>{document.getElementById("modal").style.display="flex";document.getElementById("modalImg").src=imgURL;}
+        container.appendChild(img);
+    });
+    prevBtn.disabled = currentPage===0;
+    nextBtn.disabled = end >= galleryData.length;
+}
+
+prevBtn.onclick = ()=>{ if(currentPage>0){currentPage--; renderPage();} };
+nextBtn.onclick = ()=>{ if((currentPage+1)*perPage < galleryData.length){currentPage++; renderPage();} };
+
+// Fetch all gallery images from Firestore
+firebase.firestore().collection("gallery").orderBy("timestamp","desc").get()
+.then(snapshot=>{
+    snapshot.forEach(doc=>{ galleryData.push(doc.data().image); });
+    renderPage();
 });
 </script>
 
