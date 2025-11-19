@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LESSE Motors - Contact</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/png" href="assets/logo-le.svg">
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="models.html">Models</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="preorder.html">Pre-Order</a>
+  <a href="contact.html">Contact</a>
+  <a href="admin/login.html">Admin</a>
+</nav>
+
+<div class="page-wrapper" style="padding-top:90px; max-width:600px; margin:auto; text-align:center;">
+
+  <h1 style="color:#ffcc00;margin-bottom:20px;">Contact LESSE Motors</h1>
+
+  <p style="margin-bottom:15px;">We are here to answer your questions and help with pre-orders.</p>
+
+  <div style="margin-bottom:20px;">
+    <p><strong>Phone / WhatsApp:</strong> <a href="tel:+233123456789" style="color:#ffcc00;">+233 123 456 789</a></p>
+    <p><strong>Email:</strong> <a href="mailto:info@lessemotors.com" style="color:#ffcc00;">info@lessemotors.com</a></p>
+    <p><strong>Location:</strong> Jei River Hambros, Ghana</p>
+  </div>
+
+  <div style="margin-top:30px;">
+    <h2 style="color:#ffcc00;margin-bottom:10px;">Send a Message</h2>
+    <form id="contactForm" style="display:flex;flex-direction:column;gap:15px;background:#222;padding:20px;border-radius:10px;border:1px solid #333;">
+      <input type="text" name="name" placeholder="Full Name" required style="padding:10px;border-radius:5px;border:none;">
+      <input type="email" name="email" placeholder="Email" required style="padding:10px;border-radius:5px;border:none;">
+      <textarea name="message" placeholder="Your Message" required style="padding:10px;border-radius:5px;border:none;"></textarea>
+      <button type="submit" style="padding:15px;background:#ffcc00;color:#111;font-weight:bold;border-radius:8px;border:none;cursor:pointer;">Send Message</button>
+    </form>
+    <div id="contactConfirmation" style="margin-top:20px;color:#ffcc00;font-weight:bold;"></div>
+  </div>
+
+</div>
+
+<script>
+const contactForm = document.getElementById('contactForm');
+const contactConfirmation = document.getElementById('contactConfirmation');
+
+contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = new FormData(contactForm);
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const message = formData.get('message');
+
+    // Placeholder confirmation message
+    contactConfirmation.textContent = `Thank you ${name}! Your message has been received. We will contact you via email: ${email}.`;
+
+    contactForm.reset();
+});
+</script>
+
+</body>
+</html>
