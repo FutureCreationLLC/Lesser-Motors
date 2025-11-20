@@ -1,72 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LESSE Motors - Models</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LESSE Motors - Model</title>
 <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="logo" href="index.html"><img src="assets/logo-le-sunshine.svg" alt="LESSE"></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="models.html">Models</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="preorder.html">Pre-Order</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin/login.html">Admin</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <h1 id="modelTitle" style="color:var(--accent)"></h1>
+  <div id="modelGrid" class="gallery-grid"></div>
+</div>
+<div id="modal" class="modal" onclick="this.style.display='none'"><img id="modalImg"></div>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script src="js/firebase-config.js"></script>
-<script src="js/main.js" defer></script>
-<style>
-body, html{margin:0;padding:0;font-family:Arial,sans-serif;background:#111;color:#fff;}
-nav{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.8);display:flex;justify-content:space-around;padding:15px 0;z-index:1000;}
-nav a{color:#fff;text-decoration:none;font-weight:bold;transition:color 0.3s;}
-nav a:hover{color:#ffcc00;}
-.container{padding-top:80px;max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-.type-card{position:relative;height:250px;border-radius:10px;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;}
-.type-card img{width:100%;height:100%;object-fit:cover;filter:brightness(0.6);}
-.type-title{position:absolute;color:#ffcc00;font-size:24px;font-weight:bold;text-transform:uppercase;}
-</style>
-</head>
-<body>
-
-<nav>
-<a href="index.html" class="logo">
-<img src="assets/logo-le.svg" alt="LESSE Motors Logo">
-</a>
-<a href="index.html">Home</a>
-<a href="models.html">Models</a>
-<a href="gallery.html">Gallery</a>
-<a href="preorder.html">Pre-Order</a>
-<a href="contact.html">Contact</a>
-<a href="about.html">About</a>
-<a href="admin/login.html">Admin</a>
-</nav>
-
-<h1 style="text-align:center;margin-top:100px;">Our Car Models</h1>
-
-<div class="container" id="typesContainer"></div>
-
+<script src="js/main.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const carTypes = ['sedan','pragya','bus','truck','van','pickup','electric'];
-    const container = document.getElementById("typesContainer");
-
-    carTypes.forEach(type => {
-        // Fetch first image of type from Firestore
-        firebase.firestore().collection("cars")
-            .where("type","==",type)
-            .orderBy("timestamp","asc")
-            .limit(1)
-            .get()
-            .then(snapshot=>{
-                let imgURL = 'assets/logo-le-sunshine.svg'; // default if no image
-                snapshot.forEach(doc=>{
-                    imgURL = doc.data().image;
-                });
-
-                const card = document.createElement("div");
-                card.className = "type-card";
-                card.innerHTML = `<img src="${imgURL}"><div class="type-title">${type.toUpperCase()}</div>`;
-                card.onclick = ()=>{ window.location.href = `models-type.html?type=${type}` };
-                container.appendChild(card);
-            });
-    });
-});
+loadModelType();
 </script>
-
 </body>
 </html>
