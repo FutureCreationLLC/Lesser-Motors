@@ -1,64 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Login – LESSE Motors</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="../css/style.css">
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-
-<script src="../js/firebase-config.js"></script>
-<script src="admin.js" defer></script>
-
-<style>
-body {
-    background: #111;
-    color: #fff;
-    font-family: Arial;
-    padding: 40px;
-    text-align: center;
-}
-
-.login-box {
-    max-width: 350px;
-    margin: auto;
-    background: #222;
-    padding: 25px;
-    border-radius: 10px;
-}
-
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 8px;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background: #ffcc00;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-}
-</style>
+    <title>Admin Login</title>
 </head>
-
 <body>
 
-<h2>LESSE Motors Admin</h2>
+<h2>Admin Login</h2>
 
-<div class="login-box">
-    <input type="text" id="adminEmail" placeholder="Admin Email">
-    <input type="password" id="adminPass" placeholder="Password">
-    <button onclick="adminLogin()">Login</button>
-</div>
+<form id="loginForm">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button type="submit">Login</button>
+</form>
 
+<script src="admin.js"></script>
 </body>
 </html>
