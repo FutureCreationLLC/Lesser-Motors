@@ -1,35 +1,35 @@
-// Simple demo login (you can replace with Firebase later)
-const adminUser = "LesseMotors";
-const adminPass = "Ra160824$";
+const loginPage = location.pathname.includes("login.html");
+const dashboardPage = location.pathname.includes("dashboard.html");
 
-// LOGIN PROCESS
-if (document.getElementById("loginForm")) {
-    document.getElementById("loginForm").addEventListener("submit", function(e){
-        e.preventDefault();
-
-        let u = document.getElementById("username").value;
-        let p = document.getElementById("password").value;
-
-        if (u === adminUser && p === adminPass) {
-            localStorage.setItem("adminLogged", "yes");
-            window.location.href = "dashboard.html";
-        } else {
-            alert("Incorrect login");
-        }
-    });
+if (dashboardPage && localStorage.getItem("adminLogged") !== "yes") {
+    location.href = "login.html";
 }
 
-// CHECK ACCESS FOR DASHBOARD
-if (window.location.pathname.includes("dashboard.html")) {
-    if (localStorage.getItem("adminLogged") !== "yes") {
-        window.location.href = "login.html";
+function login() {
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+    if (u === "LesseMotors" && p === "Ra160824$") {
+        localStorage.setItem("adminLogged","yes");
+        location.href = "dashboard.html";
+    } else {
+        alert("Wrong login details");
     }
 }
 
-// LOGOUT BUTTON
-if (document.getElementById("logoutBtn")) {
-    document.getElementById("logoutBtn").onclick = function(){
-        localStorage.removeItem("adminLogged");
-        window.location.href = "login.html";
-    };
+function logout() {
+    localStorage.removeItem("adminLogged");
+    location.href = "login.html";
+}
+
+function uploadBackground() {
+    const file = document.getElementById("backgroundFile").files[0];
+    if(!file){alert("Select a file");return;}
+    alert("Background uploaded successfully");
+}
+
+function uploadCarImages() {
+    const type = document.getElementById("carType").value;
+    const files = document.getElementById("carFile").files;
+    if(files.length===0){alert("Select images");return;}
+    alert(files.length + " images uploaded to " + type);
 }
