@@ -1,7 +1,0 @@
-/* Global styles */
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial,sans-serif;background:#111;color:#fff;}
-a{text-decoration:none;color:#fff;transition:0.3s;}
-a:hover{color:#ffcc00;}
-button{cursor:pointer;}
-input, select, textarea{outline:none;}
