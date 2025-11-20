@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Login</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Login</title>
+<link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-
-<h2>Admin Login</h2>
-
-<form id="loginForm">
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button type="submit">Login</button>
-</form>
-
+<div style="max-width:420px;margin:120px auto;padding:20px;background:#111;border-radius:12px;text-align:center">
+  <img src="../assets/logo-le-sunshine.svg" style="height:56px;margin-bottom:14px">
+  <h2 style="color:var(--accent)">Admin Login</h2>
+  <div style="margin-top:12px">
+    <input id="adminEmail" class="input" placeholder="Admin email" type="email">
+    <input id="adminPass" class="input" placeholder="Password" type="password">
+    <button id="loginBtn" class="btn" style="margin-top:12px">Login</button>
+    <div id="loginMsg" class="small" style="margin-top:12px"></div>
+  </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="../js/firebase-config.js"></script>
 <script src="admin.js"></script>
+<script>
+document.getElementById('loginBtn').addEventListener('click', function(){
+  var e=document.getElementById('adminEmail').value.trim();
+  var p=document.getElementById('adminPass').value.trim();
+  if(!e||!p){document.getElementById('loginMsg').textContent='Enter credentials';return}
+  auth.signInWithEmailAndPassword(e,p).then(()=>location.href='dashboard.html').catch(err=>document.getElementById('loginMsg').textContent=err.message)
+})
+</script>
 </body>
 </html>
