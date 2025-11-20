@@ -1,68 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Dashboard – LESSE Motors</title>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="../css/style.css">
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-
-<script src="../js/firebase-config.js"></script>
-<script src="admin.js" defer></script>
-
 <style>
-body { background:#111; color:#fff; font-family:Arial; padding:20px; }
-.section { background:#222; padding:20px; border-radius:10px; margin-bottom:20px; }
-input, select { padding:10px; border:none; border-radius:8px; width:100%; margin-top:10px; }
-button { margin-top:10px; padding:10px; width:100%; background:#ffcc00; border:none; border-radius:8px; font-weight:bold; }
+body{margin:0;background:#111;color:#fff;font-family:Arial}
+.top{background:#000;padding:15px;font-size:22px;font-weight:bold;text-align:center}
+.container{padding:20px}
+.box{background:#222;padding:20px;margin-bottom:20px;border-radius:10px}
+.box h2{margin:0 0 10px;color:#ffcc00}
+input,select{width:100%;padding:10px;margin-top:10px;border-radius:5px;border:none}
+button{width:100%;padding:12px;background:#ffcc00;color:#000;border:none;font-size:16px;margin-top:10px;border-radius:5px;font-weight:bold}
 </style>
-
 </head>
 <body>
 
-<h2>LESSE Motors Admin Dashboard</h2>
+<div class="top">ADMIN DASHBOARD</div>
+
+<div class="container">
+
+<div class="box">
+<h2>Upload Website Background</h2>
+<input type="file" id="backgroundFile">
+<button onclick="uploadBackground()">Upload Background</button>
+</div>
+
+<div class="box">
+<h2>Upload Car Model Images</h2>
+<select id="carType">
+<option value="pragya">Pragya</option>
+<option value="sedan">Sedan</option>
+<option value="bus">Bus</option>
+<option value="suv">SUV</option>
+<option value="pickup">Pickup</option>
+<option value="truck">Truck</option>
+</select>
+<input type="file" id="carFile" multiple>
+<button onclick="uploadCarImages()">Upload Car Images</button>
+</div>
 
 <button onclick="logout()">Logout</button>
 
-<!-- BACKGROUND UPLOAD -->
-<div class="section">
-<h3>Upload Background Image</h3>
-<input type="file" id="bgUpload">
-<button onclick="uploadBackground()">Upload</button>
 </div>
 
-<!-- CAR TYPE UPLOAD -->
-<div class="section">
-<h3>Upload Car Model</h3>
-<select id="carType">
-<option value="sedan">Sedan</option>
-<option value="bus">Bus</option>
-<option value="pragya">Pragya</option>
-<option value="truck">Truck</option>
-<option value="van">Van</option>
-<option value="pickup">Pickup</option>
-<option value="electric">Electric</option>
-</select>
-
-<input type="file" id="carImage">
-<button onclick="uploadCarModel()">Upload Model</button>
-</div>
-
-<!-- PREORDER LIST -->
-<div class="section">
-<h3>Pre-Orders</h3>
-<div id="preorderList"></div>
-</div>
-
-<!-- CONTACT MESSAGES -->
-<div class="section">
-<h3>Contact Messages</h3>
-<div id="contactList"></div>
-</div>
-
+<script src="admin.js"></script>
 </body>
 </html>
