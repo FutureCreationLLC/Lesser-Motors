@@ -1,56 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LESSE Motors - Contact</title>
 <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a class="logo" href="index.html"><img src="assets/logo-le-sunshine.svg" alt="LESSE"></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="models.html">Models</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="preorder.html">Pre-Order</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin/login.html">Admin</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <h1 style="color:var(--accent)">Contact</h1>
+  <form id="contactForm" class="form">
+    <input id="cName" class="input" placeholder="Full name" required>
+    <input id="cPhone" class="input" placeholder="Phone (WhatsApp)" required>
+    <input id="cEmail" class="input" placeholder="Email" required>
+    <textarea id="cMsg" class="input" placeholder="Your message" required></textarea>
+    <button id="cSubmit" class="btn" type="button">Send Message</button>
+    <div id="cStatus" class="small"></div>
+  </form>
+</div>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="js/firebase-config.js"></script>
-<script src="js/main.js" defer></script>
-<style>
-body{background:#111;color:#fff;font-family:Arial;padding:20px;}
-h1{text-align:center;color:#ffcc00;}
-form{max-width:500px;margin:auto;background:#222;padding:20px;border-radius:10px;}
-input, textarea{width:100%;padding:10px;margin:10px 0;border:none;border-radius:8px;}
-button{padding:12px;width:100%;background:#ffcc00;border:none;font-weight:bold;color:#111;}
-.success{color:#0f0;font-weight:bold;text-align:center;}
-</style>
-</head>
-<body>
-
-<h1>Contact Us</h1>
-
-<form id="contactForm">
-<input type="text" id="name" placeholder="Full Name" required>
-<input type="email" id="email" placeholder="Email" required>
-<input type="text" id="phone" placeholder="Phone Number" required>
-<textarea id="message" placeholder="Your Message" required></textarea>
-<button type="submit">Send Message</button>
-<div class="success" id="successMsg"></div>
-</form>
-
+<script src="js/main.js"></script>
 <script>
-document.getElementById("contactForm").addEventListener("submit", e=>{
-    e.preventDefault();
-    const data = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        message: document.getElementById("message").value,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    };
-    firebase.firestore().collection("contacts").add(data)
-    .then(()=>{
-        document.getElementById("successMsg").textContent="Message sent successfully!";
-        document.getElementById("contactForm").reset();
-    })
-    .catch(err=>{
-        alert("Error: "+err.message);
-    });
-});
+setupContact();
 </script>
-
 </body>
 </html>
